@@ -1,0 +1,15 @@
+<template name="newPostType">
+	<div class="control">
+
+		<h2>New Post Type</h2>
+		<div class="clearfix"></div>
+	</div>
+	
+	{{#autoForm schema=postTypesSchema id="newPostTypeForm" type="method" meteormethod="postTypes.insert"}}
+		{{> afQuickFields}}
+		<div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="reset" class="btn btn-default">Reset</button>
+		</div>
+	{{/autoForm}}
+</template>

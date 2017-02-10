@@ -4,9 +4,9 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 import { _ } from 'meteor/underscore';
 
-import { PostTypes } from './post-types.js';
+import { WpHosts } from './wo-hosts.js';
 
-const pt_id_only = new SimpleSchema({
+const wh_id_only = new SimpleSchema({
 	postTypeId: {
 		type: String,
 		regEx: SimpleSchema.RegEx.Id
@@ -14,30 +14,30 @@ const pt_id_only = new SimpleSchema({
 }).validator({clean: true, filter: false});
 
 export const insert = new ValidatedMethod({
-	name: 'postTypes.insert',
-	validate: PostTypes.schema.validator({ clean: true, filter: false }),
-	run(newPostType) {
+	name: 'wphosts.insert',
+	validate: WpHosts.schema.validator({ clean: true, filter: false }),
+	run(newHost) {
 		// Add code to validate if insert should be allowed
-		return PostTypes.insert(newPostType, null);
+		return WpHosts.insert(newHost, null);
 	},
 });
 
 export const remove = new ValidatedMethod({
-	name: 'postTypes.remove',
-	validate: pt_id_only,
-	run({postTypeId}) {
-		const postType = PostTypes.findOne(postTypeId);
+	name: 'wphosts.remove',
+	validate: wh_id_only,
+	run({hostId}) {
+		const host = WpHosts.findOne(hostId);
 		// Add code to validate if removal should be allowed
 
-		PostTypes.remove(postTypeId);
+		WpHosts.remove(hostId);
 	},
 });
 
 export const update = new ValidatedMethod({
-	name: 'postTypes.update',
-	validate: PostTypes.schema.validator({ clean: true, filter: false }),
-	run(newPostType) {
+	name: 'wphosts.update',
+	validate: WpHosts.schema.validator({ clean: true, filter: false }),
+	run(newHost) {
 		// Add code to validate if insert should be allowed
-		return PostTypes.update(newPostType, null);
+		return WpHosts.update(newHost, null);
 	},
 });

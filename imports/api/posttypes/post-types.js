@@ -11,25 +11,9 @@
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { Factory } from 'meteor/dburles:factory';
-import { TAPi18n } from 'meteor/tap:i18n';
+import { ownerSchema } from '../audit/audit.js';
 
-class PostTypesCollection extends Mongo.Collection {
-
-	insert(postType, callback, language = 'en') {
-		const localPostType = postType;
-		// Process post type as necessary
-		// (...)
-
-		// Perform insert
-		return super.insert(localPostType, callback);
-	}
-
-	remove(selector, callback) {
-		return super.remove(selector, callback);
-	}
-}
-
-export const PostTypes = new PostTypesCollection('rc-posttypes');
+export const PostTypes = new Mongo.Collection('post_types');
 
 PostTypes.deny({
 	insert() { return true; },
@@ -38,35 +22,68 @@ PostTypes.deny({
 });
 
 PostTypes.schema = new SimpleSchema ({
-	_id: {
-		type: String,
-		regEx: SimpleSchema.RegEx.Id
-	},
 	ptName: {
-		type: String
+		type: String,
+		label: "Post type name"
 	},
-	elements: {
+	description: {
+		type: String,
+		label: "Description",
+		defaultValue: ""
+	},
+	postfields: {
 		type: Array,
+		label: "Fields",
 		optional: true,
 		minCount: 1
 	},
-	"elements.$": {
-		type: Object,
+	"postfields.$": {
+		type: Object
 	},
-	"elements.$.elName": {
+	"postfields.$.name": {
 		type: String,
+		label: "Field name"
 	},
-	"elements.$elLabel": {
-		type: String
+	"postfields.$.label": {
+		type: String,
+		label: "Label"
 	},
-	"elements.$elType": {
-		type: String
+	"postfields.$.type": {
+		type: String,
+		label: "Type",
+		autoform: {
+			type: "select",
+			options: function () {
+				return [
+					{label: "String", value: "String"},
+					{label: "Number", value: "Number"},
+					{label: "Date", value: "Date"},
+				];
+			}
+		}
 	},
-	"elements.$elOrder": {
-		type: Number
+	"postfields.$.priority": {
+		type: Number,
+		label: "Priority"
+	},
+	postCount: {
+		type: Number,
+		label: "Post count",
+		defaultValue: 0,
+		autoform: {
+			omit: true
+		}
+	},
+	audit: {
+		type: ownerSchema,
+		autoform: {
+			omit: true
+		}
 	}
 
 });
+
+PostTypes.attachSchema(PostTypes.schema);
 
 Factory.define('rc-posttypes', PostTypes, {});
 

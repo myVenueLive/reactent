@@ -1,0 +1,32 @@
+<template name="admin">
+	<div class="wrapper">
+			<table>
+				<caption>Reactive Post Types</caption>
+				<thead>
+					<th>Post Type Name</th>
+					<th>Fields</th>
+				</thead>
+				<tbody>
+					{{#if Template.subscriptionsReady}}
+						{{#each pType in postTypes}}
+							<tr>
+								<td>{{pType.ptName}}</td><td>{{test pType}} {{pType.description}}</td>
+							</tr>
+							{{#each ptField in pType.postfields}}
+								<tr>
+									<td>----></td><td>{{ptField.name}}</td>
+								</tr>
+							{{/each}}
+						{{else}}
+							<td>No data</td><td>0</td>
+						{{/each}}
+					{{else}}
+						<tr>
+							<td>Loading</td><td>data</td>
+						</tr>
+					{{/if}}
+				</tbody>
+			</table>
+			<button class="button addRecord">Add Post Type</button>
+	</div>
+</template>

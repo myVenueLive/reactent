@@ -1,0 +1,21 @@
+<template name="front">
+	<section>
+		<h2>Here come all testable components</h2>
+		<article>
+			{{#if queryLoaded}}
+				{{#each pages}}
+					{{> page}}
+				{{/each}}
+			{{else}}
+				<p>No pages</p>
+			{{/if}}
+		</article>
+		<article>
+			{{{testphp}}}
+		</article>
+	</section>
+</template>
+
+<template name="page">
+	<article> {{{excerpt.rendered}}} </article>
+</template>
